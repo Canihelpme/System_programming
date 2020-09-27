@@ -11,10 +11,11 @@ struct Book{
 };
 typedef struct Book Book;
 
-int add_book(Book *book_list, int *num_total_book);
+int add_book(Book *book_list, int *num_total_book, int index);
 int search_book(Book *book_list, int num_total_book);
 int update_book(Book *book_list, int *num_total_book, int index);
 int print_book_list(Book *book_list, int num_total_book);
+int remove_all(Book *book_list, int index);
 
 int compare_int(int int1, int int2);
 int compare_char(char *str1, char *str2);
@@ -45,8 +46,8 @@ int main()
         scanf("%d", &user_choice);
         if(user_choice == 1)
         {
-            add_book(book_list, &num_total_book);
             index = num_total_book;
+            add_book(book_list, &num_total_book, index);
         }
         else if(user_choice == 2)
         {
@@ -54,6 +55,7 @@ int main()
         }
         else if(user_choice == 3)
         {
+            index = num_total_book;
             update_book(book_list, &num_total_book, index);
         }
         else if(user_choice == 4)
@@ -62,7 +64,8 @@ int main()
         }
         else if(user_choice == 5)
         {
-
+            index = num_total_book;
+            remove_all(book_list, index);
         }
         else if(user_choice == 6)
         {
@@ -73,10 +76,24 @@ int main()
     return 0;
 }
 
-int add_book(Book *book_list, int *num_total_book)
+int add_book(Book *book_list, int *num_total_book, int index)
 {
     printf("The ID of book: ");
     scanf("%d", &book_list[*num_total_book].book_id);
+    int i, c=0;
+	for(i=0; i<index; i++)
+    {
+		while(book_list[*num_total_book].book_id == book_list[i].book_id)
+        {
+			printf("duplicate id\n");
+			printf("Enter the student id:");
+            scanf("%d", &book_list[*num_total_book].book_id);
+			getchar();
+			c++;
+			if(c == 3)
+				break;
+	    }
+    }
 
     printf("The name of book: ");
     scanf("%s", book_list[*num_total_book].book_name);
@@ -221,7 +238,6 @@ int compare_char(char *str1, char *str2)
             return 0;
         }
     
-
     str1++;
     str2++;
     }
@@ -271,7 +287,7 @@ int update_book(Book *book_list, int *num_total_book,int index)
         else if(update_decision == 2)
         {
             printf("Please, enter the book NAME to change: ");
-            scanf("%s", book_list[*num_total_book].book_name);
+            scanf("%s", book_list[i].book_name);
             printf("Modified completed.\n");
 
 
@@ -325,4 +341,17 @@ int print_book_list(Book *book_list, int total_num_book)
         
     }
     fclose(fp);
+}
+
+int remove_all(Book *book_list, int index)
+{
+    int i;
+    for(i=0; i<index; i++)
+    {
+        book_list[i].book_id = "";
+        strcpy(book_list[i].book_name, "");
+        book_list[i].pub_date = "";
+        //strcpy(book_list[i].auth_name = "");
+        //strcpy(book_list[i].auth_email = "");
+    }
 }
