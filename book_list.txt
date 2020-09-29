@@ -1,2 +1,0 @@
-Book id / Book name / Published date / Author name / Author email
-1 / w / 12 / we / wow
